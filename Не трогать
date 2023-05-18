@@ -1,0 +1,626 @@
+Sub RunScript()
+    Dim scriptNumber As String
+    
+    ' Ask the user which script to run
+    scriptNumber = UCase(InputBox("Выбор кода"))
+    
+    ' Run the selected script(s)
+    If scriptNumber = "ВСЕ" Then
+        Call Script1
+        Call Script2
+        Call Script3
+        Call Script4
+        Call Script5
+        Call Script6
+        Call Script7
+        Call Script8
+        Call Script9
+        Call Script10
+        Call Script11
+        Call Script12
+        Call Script13
+        Call Script14
+        Call Script15
+        Call Script16
+        Call Script17
+        Call Script18
+    ElseIf IsNumeric(scriptNumber) Then
+        Select Case scriptNumber
+            Case "1"
+                Call Script1
+            Case "2"
+                Call Script2
+            Case "3"
+                Call Script3
+            Case "4"
+                Call Script4
+            Case "5"
+                Call Script5
+            Case "6"
+               Call Script6
+            Case "7"
+               Call Script7
+            Case "8"
+               Call Script8
+            Case "9"
+               Call Script9
+            Case "10"
+               Call Script10
+            Case "11"
+               Call Script11
+                Case "12"
+               Call Script12
+                Case "13"
+               Call Script13
+                Case "14"
+               Call Script14
+                Case "15"
+               Call Script15
+               Case "16"
+               Call Script16
+               Case "17"
+               Call Script17
+               Case "18"
+               Call Script18
+            Case Else
+           
+                MsgBox "Напишите слово ВСЕ для проверки всего или напишити номер нужного кода."
+        End Select
+    Else
+        
+    End If
+End Sub
+
+
+Sub Script1()
+ Dim lastRow As Long
+ Dim i As Long
+
+lastRow = Cells(Rows.Count, "A").End(xlUp).row
+
+For i = 1 To lastRow
+    Range("A" & i).value = UCase(Range("A" & i).value)
+Next i
+MsgBox "s."
+
+End Sub
+
+
+Sub Script2()
+Dim rng As Range
+Dim cel As Range
+
+
+Set rng = ActiveSheet.UsedRange
+
+For Each cel In rng
+    If InStr(1, cel.value, """") > 0 Then
+        cel.value = Replace(cel.value, """", "")
+    End If
+Next cel
+MsgBox "2."
+End Sub
+Sub Script3()
+    Dim myString As String
+    Dim leftPar As Long
+    Dim rightPar As Long
+    Dim codeWord1 As String
+    Dim codeWord2 As String
+    Dim myCell As Range
+    
+    codeWord1 = "КОД"
+    codeWord2 = "ОКПО"
+
+    For Each myCell In Range("A1:A" & Cells(Rows.Count, "A").End(xlUp).row)
+        
+        myString = myCell.value
+        
+        leftPar = InStr(myString, "(")
+        rightPar = InStr(myString, ")")
+        
+        If InStr(myString, codeWord1) > 0 And leftPar > 0 And rightPar > 0 Then
+          
+            myString = Left(myString, leftPar - 1) & Right(myString, Len(myString) - rightPar)
+        ElseIf InStr(myString, codeWord2) > 0 And leftPar > 0 And rightPar > 0 Then
+           
+            myString = Left(myString, leftPar - 1) & Right(myString, Len(myString) - rightPar)
+        End If
+        
+        myCell.value = myString
+    Next myCell
+    MsgBox "s."
+
+End Sub
+Sub Script4()
+Dim lastRow As Long
+Dim i As Long
+    lastRow = Cells(Rows.Count, "A").End(xlUp).row 'определяем последнюю заполненную строку в столбце A
+
+    For i = 1 To lastRow 'перебираем все строки от 1 до последней заполненной
+        Dim text As String
+        text = Cells(i, "A").value 'читаем текст из ячейки
+
+        'удаляем лишние слова
+        text = Replace(text, "ПАО", "")
+        text = Replace(text, "ООО", "")
+        text = Replace(text, "ЗАО", "")
+        text = Replace(text, "TOO", "")
+        text = Replace(text, "АО", "")
+        text = Replace(text, "ТОО", "")
+        text = Replace(text, "OОО", "")
+        'удаляем возможные пробелы или знаки препинания в начале или конце строки
+        text = Trim(text)
+
+        'записываем обновленный текст обратно в ячейку
+        Cells(i, "A").value = text
+    Next i
+    MsgBox "1212."
+End Sub
+Sub Script5()
+    Dim i As Long
+    Dim rzdCount As Integer
+    Dim tkTransCount As Integer
+    Dim fosagroTransCount As Integer
+    Dim fosagroCherepovetsCount As Integer
+    Dim beforeValue As String
+    rzdCount = 0
+    tkTransCount = 0
+    fosagroTransCount = 0
+    fosagroCherepovetsCount = 0
+    
+    For i = 1 To Cells(Rows.Count, 1).End(xlUp).row
+    If InStr(1, Cells(i, 1), "ГУП") > 0 Then
+        On Error Resume Next
+        Cells(i, 1).SpecialCells(xlCellTypeConstants).Locked = False
+        Cells(i, 1).Locked = True
+        On Error GoTo 0
+    ElseIf InStr(1, Cells(i, 1), "ДИРЕКЦИЯ") > 0 Then
+        Cells(i, 1) = "РЖД"
+    End If
+Next i
+
+    For i = 1 To Cells(Rows.Count, 1).End(xlUp).row
+    If InStr(1, Cells(i, 1), "ДИРЕКЦИИ") > 0 Then
+        Cells(i, 1) = "РЖД"
+    End If
+Next i
+
+    For i = 1 To Cells(Rows.Count, 1).End(xlUp).row
+    If InStr(1, Cells(i, 1), "ДИСТ-Я") > 0 Then
+        Cells(i, 1) = "РЖД"
+
+    End If
+Next i
+For i = 1 To Cells(Rows.Count, 1).End(xlUp).row
+    If InStr(1, Cells(i, 1), "ЮВЖД") > 0 Then
+        Cells(i, 1) = "РЖД"
+    End If
+Next i
+For i = 1 To Cells(Rows.Count, 1).End(xlUp).row
+    If InStr(1, Cells(i, 1), "КЖД") > 0 Then
+        Cells(i, 1) = "РЖД"
+    End If
+Next i
+For i = 1 To Cells(Rows.Count, 1).End(xlUp).row
+    If InStr(1, Cells(i, 1), "ДИ ЦДИ") > 0 Then
+        Cells(i, 1) = "РЖД"
+    End If
+Next i
+For i = 1 To Cells(Rows.Count, 1).End(xlUp).row
+    If InStr(1, Cells(i, 1), "ЗАП-СИБ") > 0 Then
+        Cells(i, 1) = "РЖД"
+    End If
+Next i
+For i = 1 To Cells(Rows.Count, 1).End(xlUp).row
+    If InStr(1, Cells(i, 1), "СВЖД") > 0 Then
+        Cells(i, 1) = "РЖД"
+    End If
+Next i
+For i = 1 To Cells(Rows.Count, 1).End(xlUp).row
+    If InStr(1, Cells(i, 1), "ВОСТОЧНАЯ ТРАНСПОРТНАЯ КОМПАНИЯ") > 0 Then
+        Cells(i, 1) = "ВТК"
+    End If
+Next i
+
+    ' Замена значений "РЖД" на "РЖД"
+    
+    For i = 1 To Cells(Rows.Count, 1).End(xlUp).row
+    If InStr(1, Cells(i, 1), "ДИСТАНЦИЯ") > 0 Then
+        Cells(i, 1) = "РЖД"
+    End If
+Next i
+
+    ' Замена значений "РЖД" на "РЖД"
+    For i = 1 To Cells(Rows.Count, 1).End(xlUp).row
+        beforeValue = Cells(i, 1).value
+        If InStr(1, beforeValue, "РЖД") > 0 Then
+            Cells(i, 1) = "РЖД"
+            rzdCount = rzdCount + 1
+        End If
+    Next i
+    
+    ' Замена значений "ТК TRANS" на "ТК ТРАНС"
+    For i = 1 To Cells(Rows.Count, 1).End(xlUp).row
+        beforeValue = Cells(i, 1).value
+        If InStr(1, beforeValue, "ТК TRANS") > 0 Then
+            Cells(i, 1) = "ТК ТРАНС"
+            tkTransCount = tkTransCount + 1
+        End If
+    Next i
+    For i = 1 To Cells(Rows.Count, 1).End(xlUp).row
+    If InStr(1, Cells(i, 1), "СЕГЕЖА") > 0 Then
+        Cells(i, 1) = "СЕГЕЖА ГРУПП"
+    End If
+Next i
+For i = 1 To Cells(Rows.Count, 1).End(xlUp).row
+    If InStr(1, Cells(i, 1), "М-СТАЛЬ") > 0 Then
+        Cells(i, 1) = "М-СТАЛЬ"
+    End If
+Next i
+For i = 1 To Cells(Rows.Count, 1).End(xlUp).row
+    If InStr(1, Cells(i, 1), "БАЗАЛТ") > 0 Then
+        Cells(i, 1) = "БАЗАЛЬТ"
+    End If
+Next i
+For i = 1 To Cells(Rows.Count, 1).End(xlUp).row
+    If InStr(1, Cells(i, 1), "НЕФТЕПРОМ") > 0 Then
+        Cells(i, 1) = "НЕФТЕПРОМСЕРВИС"
+    End If
+Next i
+
+    ' Замена значений "ФОСАГРО-ТРАНС" на "АПАТИТ"
+    For i = 1 To Cells(Rows.Count, 1).End(xlUp).row
+        beforeValue = Cells(i, 1).value
+        If InStr(1, beforeValue, "ФОСАГРО-ТРАНС") > 0 Then
+            Cells(i, 1) = "АПАТИТ"
+            fosagroTransCount = fosagroTransCount + 1
+        End If
+    Next i
+    For i = 1 To Cells(Rows.Count, 1).End(xlUp).row
+    If InStr(1, Cells(i, 1), "ЕВРАЗ НТМК") > 0 Then
+        Cells(i, 1) = "ЕВРАЗ"
+    End If
+Next i
+
+    ' Замена значений "ФОСАГРО-ЧЕРЕПОВЕЦ" на "АПАТИТ"
+    For i = 1 To Cells(Rows.Count, 1).End(xlUp).row
+        beforeValue = Cells(i, 1).value
+        If InStr(1, beforeValue, "ФОСАГРО-ЧЕРЕПОВЕЦ") > 0 Then
+            Cells(i, 1) = "АПАТИТ"
+            fosagroCherepovetsCount = fosagroCherepovetsCount + 1
+        End If
+    Next i
+    For i = 1 To Cells(Rows.Count, 1).End(xlUp).row
+    If InStr(1, Cells(i, 1), "АУРАТ") > 0 Then
+        Cells(i, 1) = "АУРАТ"
+    End If
+Next i
+For i = 1 To Cells(Rows.Count, 1).End(xlUp).row
+    If InStr(1, Cells(i, 1), "ЦДРП") > 0 Then
+        Cells(i, 1) = "РЖД"
+    End If
+Next i
+For i = 1 To Cells(Rows.Count, 1).End(xlUp).row
+    If InStr(1, Cells(i, 1), "СТПОБП ЭКСПЛУАТАЦИОННОЕ ВАГОННОЕ ДЕПО СМЫЧКА ЦДИ Ф") > 0 Then
+        Cells(i, 1) = "РЖД"
+    End If
+Next i
+For i = 1 To Cells(Rows.Count, 1).End(xlUp).row
+    If InStr(1, Cells(i, 1), "НВРК") > 0 Then
+        Cells(i, 1) = "ВРК-2"
+    End If
+Next i
+For i = 1 To Cells(Rows.Count, 1).End(xlUp).row
+    If InStr(1, Cells(i, 1), "ПУТЕВАЯ МАШИННАЯ СТАНЦИЯ") > 0 Then
+        Cells(i, 1) = "РЖД"
+    End If
+
+Next i
+For i = 1 To Cells(Rows.Count, 1).End(xlUp).row
+    If InStr(1, Cells(i, 1), "ЕВРАЗ ЗСМК") > 0 Then
+        Cells(i, 1) = "ЕВРАЗ"
+    End If
+Next i
+For i = 1 To Cells(Rows.Count, 1).End(xlUp).row
+    If InStr(1, Cells(i, 1), "ЕВРАЗ КГОК") > 0 Then
+        Cells(i, 1) = "ЕВРАЗ"
+    End If
+Next i
+    ' Вывод сообщения об изменении значений
+    MsgBox "Значение 'РЖД' заменено на 'РЖД' " & rzdCount & " раз(а)" & Chr(10) _
+    & "Значение 'ТК TRANS' заменено на 'ТК ТРАНС' " & tkTransCount & " раз(а)" & Chr(10) _
+    & "Значение 'ФОСАГРО-ТРАНС' заменено на 'АПАТИТ' " & fosagroTransCount & " раз(а)" & Chr(10) _
+    & "Значение 'ФОСАГРО-ЧЕРЕПОВЕЦ' заменено на 'АПАТИТ' " & fosagroCherepovetsCount & " раз(а)"
+
+
+
+
+
+' Вывод сообщения со старыми значениями
+beforeValue = ""
+For i = 1 To Cells(Rows.Count, 1).End(xlUp).row
+    beforeValue = beforeValue & Cells(i, 1).value & Chr(10)
+Next i
+MsgBox "Старые значения:" & Chr(10) & beforeValue
+End Sub
+Sub Script6()
+    Dim myCell As Range
+    Dim myString As String
+    
+    For Each myCell In Range("A1:A" & Cells(Rows.Count, "A").End(xlUp).row)
+        myString = myCell.value
+        myString = Replace(myString, "-", " ")
+        myString = Replace(myString, "–", " ")
+        myString = Replace(myString, "—", " ")
+        myCell.value = myString
+    Next myCell
+    
+    For Each myCell In Range("A1:A" & Cells(Rows.Count, "A").End(xlUp).row)
+        myCell.value = Replace(myCell.value, ".", "")
+    Next myCell
+End Sub
+Sub Script7()
+    Dim lastRow As Long
+    lastRow = Cells(Rows.Count, 1).End(xlUp).row
+    ' Определяем?доследнюю заполненную?строку в столбце A
+    
+    Dim row As Long
+    For row = 1 To lastRow
+        Dim value As String
+        value = Cells(row, 1).value
+        If InStr(value, "EKSPRESS") > 0 Then
+            ' Заменяем ошибку на правильное написание слова EXPRESS
+            value = Replace(value, "EKSPRESS", "EXPRESS")
+            Cells(row, 1).value = value ' Записываем?измененное?ниечение обратно в ячейку
+        End If
+    Next row
+End Sub
+
+Sub Script8()
+    Dim lastRow As Long
+    lastRow = Cells(Rows.Count, 1).End(xlUp).row
+    ' Определяем?доследнюю заполненную?строку в столбце А
+    
+    Dim i As Long
+    For i = 1 To lastRow
+        If InStr(1, Cells(i, 1), "ВЭБ ЛИЗИНГ") > 0 Then
+            Cells(i, 1).value = "ВЭБ ЛИЗИНГ"
+        End If
+    Next i
+     For i = 1 To lastRow
+        If InStr(1, Cells(i, 1), "АБ ЭНЕРГО") > 0 Then
+            Cells(i, 1).value = "АБ ЭНЕРГО"
+        End If
+    Next i
+    For i = 1 To lastRow
+        If InStr(1, Cells(i, 1), "УРАЛЬСКАЯ ТРАНСПОРТНАЯ КОМПАНИЯ") > 0 Then
+            Cells(i, 1).value = "УТК"
+        End If
+    Next i
+    For i = 1 To lastRow
+        If InStr(1, Cells(i, 1), "УТК") > 0 Then
+            Cells(i, 1).value = "УТК"
+        End If
+    Next i
+End Sub
+
+Sub Script9()
+    Dim rng As Range
+    Dim cell As Range
+    Dim abbreviation As String
+    Dim wordCount As Integer
+    Dim i As Integer
+    Dim isException As Boolean
+    Dim isEnglishOrNumber As Boolean
+    
+    'Выбор столбца A:
+    Set rng = Range("A1:A" & Cells(Rows.Count, "A").End(xlUp).row)
+    
+    'Цикл по каждой ячейке в столбце A:
+    For Each cell In rng
+        isEnglishOrNumber = False
+        wordCount = UBound(Split(cell.value, " ")) + 1
+        If wordCount >= 3 Then
+            abbreviation = ""
+            isException = False
+            
+            'Цикл по каждому слову в ячейке, проверяем исключения и добавляем в аббревиатуру:
+            For i = 0 To UBound(Split(cell.value, " "))
+                If UCase(Split(cell.value, " ")(i)) Like "(ТС)" Or UCase(Split(cell.value, " ")(i)) Like "(ТК)" Or UCase(Split(cell.value, " ")(i)) Like "(НЕ)" Or UCase(Split(cell.value, " ")(i)) Like "(ИП)" Or (UCase(Split(cell.value, " ")(i)) Like "(ОПР)" And UCase(Trim(Split(cell.value, " ")(i))) <> "НЕ ОПР") Then
+                    isException = True
+                    Exit For
+                End If
+                
+                If IsNumeric(Split(cell.value, " ")(i)) Or WorksheetFunction.IsNumber(Split(cell.value, " ")(i)) Or Len(Split(cell.value, " ")(i)) = 1 Or Split(cell.value, " ")(i) Like "[a-zA-Z]*" Then
+                    isEnglishOrNumber = True
+                    Exit For
+                End If
+                
+                If Not isException And Not isEnglishOrNumber Then
+                    abbreviation = abbreviation & Left(Split(cell.value, " ")(i), 1)
+                End If
+                
+            Next i
+            
+            'Добавляем аббревиатуру в скобки, если не было слов исключений и английских слов и цифр:
+            If (Not isException) And (Not isEnglishOrNumber) And (Len(abbreviation) >= 3) Then
+                cell.value = cell.value & " (" & abbreviation & ")"
+            End If
+            
+        End If
+    Next cell
+End Sub
+Sub Script10()
+    Dim dict As Object
+    Set dict = CreateObject("Scripting.Dictionary") '???????? ??????? ???????
+    Dim lastRow As Long
+    lastRow = ActiveSheet.Cells(Rows.Count, "A").End(xlUp).row '????????? ??????????? ?????? ? ??????? A
+    Dim i As Long
+    For i = 1 To lastRow '???? ????????? ???? ??????????? ????? ? ??????? A
+        Dim openingBracket As Long, closingBracket As Long
+        openingBracket = InStr(1, Range("A" & i), "(") '????? ??????? "(" ? ??????
+        closingBracket = InStr(1, Range("A" & i), ")") '????? ??????? ")" ? ??????
+        If openingBracket > 0 And closingBracket > 0 Then '???? ??????? ??? ??????? ? ??????
+            Dim abbreviation As String
+            abbreviation = Trim(Mid(Range("A" & i), openingBracket + 1, closingBracket - openingBracket - 1)) '????????? ????????????
+            If Not dict.Exists(abbreviation) Then '???? ???????????? ??? ??? ? ???????, ?? ???????? ??
+                dict.Add abbreviation, Range("A" & i).value
+            Else '???? ???????????? ??? ???? ? ???????, ?? ???????? ??????
+                Range("A" & i).value = dict(abbreviation)
+            End If
+        End If
+    Next i
+End Sub
+Sub Script11()
+Dim lastRow As Long
+    Dim cell As Range
+    Dim duplicateCells As Range
+    
+    lastRow = Cells(Rows.Count, 1).End(xlUp).row
+    
+    For Each cell In Range("A1:A" & lastRow)
+        If Application.CountIf(Range("A1:A" & cell.row), cell.value) > 1 Then
+            If duplicateCells Is Nothing Then
+                Set duplicateCells = cell
+            Else
+                Set duplicateCells = Union(duplicateCells, cell)
+            End If
+        End If
+    Next cell
+    
+    If Not duplicateCells Is Nothing Then
+        duplicateCells.Interior.Color = vbYellow
+    End If
+    MsgBox "Один из клонов подчеркнут желтым маркером,(для проверки выберете фильтр в названии), фильтрация по цвету."
+End Sub
+
+
+Sub Script12()
+Dim lastRow As Long
+Dim i As Long
+
+lastRow = Cells(Rows.Count, "A").End(xlUp).row
+
+For i = 1 To lastRow
+    If Range("A" & i).Interior.ColorIndex = 6 Then
+        
+        Range("B" & i).Interior.ColorIndex = 5
+    End If
+Next i
+MsgBox "Напротив ячеек клонов компаний, будет отобрано количество ремонтных работ"
+End Sub
+
+
+
+Sub Script13()
+    Dim lastRow As Long
+    Dim i As Long
+    Dim dict As Object
+    
+    lastRow = Cells(Rows.Count, "A").End(xlUp).row
+    
+    Set dict = CreateObject("Scripting.Dictionary")
+
+    For i = 1 To lastRow
+        If Range("A" & i).value <> "" Then
+            If dict.Exists(Range("A" & i).value) Then
+                dict(Range("A" & i).value) = dict(Range("A" & i).value) + Range("B" & i).value
+            Else
+                dict.Add Range("A" & i).value, Range("B" & i).value
+            End If
+        End If
+    Next i
+
+    For i = 1 To lastRow
+        If Range("A" & i).value <> "" And dict.Exists(Range("A" & i).value) Then
+            Range("C" & i).value = dict(Range("A" & i).value)
+        End If
+    Next i
+    MsgBox "Включена функция подсчета и обьединения по результатам"
+End Sub
+
+
+
+Sub Script14()
+
+Dim lastRow As Long
+Dim i As Long
+
+lastRow = Range("C" & Rows.Count).End(xlUp).row
+
+For i = 1 To lastRow
+    Range("B" & i).value = Range("C" & i).value
+    Range("C" & i).ClearContents
+Next i
+
+End Sub
+
+
+Sub Script15()
+
+Dim cell As Range
+
+For Each cell In ActiveSheet.UsedRange
+    If cell.Interior.ColorIndex = 6 Then
+        cell.ClearContents
+    End If
+Next
+For Each cell In ActiveSheet.UsedRange
+    If cell.Interior.ColorIndex = 5 Then
+        cell.ClearContents
+    End If
+Next
+ MsgBox "Включен "
+End Sub
+
+
+
+
+Sub Script16()
+    Dim myRange As Range
+    Set myRange = Range("A:B")
+    myRange.Interior.ColorIndex = xlNone
+End Sub
+
+Sub Script17()
+    Dim lastRow As Long
+    lastRow = Cells(Rows.Count, 1).End(xlUp).row
+    ' Определяем?доследнюю заполненную?строку в столбце A
+    
+    Dim row As Long
+    For row = lastRow To 1 Step -1 ' Перебираем?итроки с конца до начала
+        If Cells(row, 1).value = "" And Cells(row, 2).value = "" Then
+            ' Если ячейки A и B пустые, удаляем?строку и сдвигаем ячейки вверх
+            Rows(row).Delete Shift:=xlUp
+        End If
+    Next row
+End Sub
+
+
+
+Sub Script18()
+    Dim lastRow As Long
+    lastRow = ActiveSheet.Cells(Rows.Count, "A").End(xlUp).row 'последняя заполненная строка в столбце A
+    Dim i As Long
+    For i = 1 To lastRow 'цикл обработки всех заполненных строк в столбце A
+        Dim openingBracket As Long, closingBracket As Long
+        openingBracket = InStr(1, Range("A" & i), "(") 'поиск символа "(" в ячейке
+        closingBracket = InStr(1, Range("A" & i), ")") 'поиск символа ")" в ячейке
+        If openingBracket > 0 And closingBracket > 0 Then 'если оба символа найдены в ячейке
+            Dim abbreviation As String
+            abbreviation = Trim(Mid(Range("A" & i), openingBracket + 1, closingBracket - openingBracket - 1)) 'получение аббревиатуры
+            If Len(abbreviation) = closingBracket - openingBracket - 1 Then 'если аббревиатура полностью занимает скобку
+                Range("A" & i).value = Left(Range("A" & i), openingBracket - 1) & Right(Range("A" & i), Len(Range("A" & i)) - closingBracket) 'удаление скобки из ячейки
+            End If
+        End If
+    Next i
+End Sub
+Sub Translate()
+    Dim lastRow As Long
+    lastRow = ActiveSheet.Cells(Rows.Count, "A").End(xlUp).row 'последняя заполненная строка в столбце A
+    Dim i As Long
+    For i = 1 To lastRow 'обработка всех заполненных строк в столбце A
+        Range("B" & i).Formula = "=MicrosoftTextTranslator(A" & i & ",""en"",""ru"")" 'применение функции перевода
+        Range("A" & i).Copy Range("C" & i) 'копирование оригинального текста в столбец C для сравнения
+    Next i
+End Sub
